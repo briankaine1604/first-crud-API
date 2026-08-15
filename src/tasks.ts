@@ -48,4 +48,42 @@ tasksRoute.post("/", async (c) => {
   return c.json(newTask, 201);
 });
 
+tasksRoute.put("/:id", async (c) => {
+  const id = Number(c.req.param("id"));
+  const task = tasks.find((t) => t.id === id);
+
+  if (!task) {
+    return c.json({ error: `Task ${id} not found` }, 404);
+  }
+
+  let body;
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: "invalid body" }, 400);
+  }
+
+  if (body.title === undefined && body.done === undefined) {
+    return c.json({ error: "title or done is required" }, 400);
+  }
+
+  if (body.title !== undefined) task.title = body.title;
+  if (body.done !== undefined) task.done = body.done;
+
+  return c.json(task);
+});
+
+tasksRoute.delete("/:id", (c) => {
+  const id = Number(c.req.param("id"));
+  const index = tasks.findIndex((t) => t.id === id);
+
+  if (index === -1) {
+    return c.json({ error: `Task ${id} not found` }, 404);
+  }
+
+  tasks.splice(index, 1);
+
+  return c.body(null, 204);
+});
+
 export { tasksRoute };
