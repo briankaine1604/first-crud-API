@@ -30,4 +30,22 @@ tasksRoute.get("/:id", (c) => {
   return c.json(task);
 });
 
+tasksRoute.post("/", async (c) => {
+  const body = await c.req.json();
+
+  if (!body.title) {
+    return c.json({ error: "title is required" }, 400);
+  }
+
+  const newTask: Task = {
+    id: tasks.length + 1,
+    title: body.title,
+    done: false,
+  };
+
+  tasks.push(newTask);
+
+  return c.json(newTask, 201);
+});
+
 export { tasksRoute };
