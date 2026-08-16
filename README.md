@@ -48,7 +48,7 @@ Server runs at `http://localhost:3000`.
 
 Interactive Swagger UI is available at `/docs`.
 
-![Swagger UI](./screenshot.png)
+![Swagger UI](./Screenshot-docs.png)
 
 ## Notes
 
